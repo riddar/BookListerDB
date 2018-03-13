@@ -4,45 +4,49 @@ window.addEventListener('load', function(event){
 
   var div = document.getElementById("list")
 
-  function GetAllBooks(event) {
-      fetch(Endpoint)
-          .then(response => {
-              console.log('Response: ', response)
-              return response.text()
-          })
-          .then(text => {
-              console.log('text: ', text)
-          })
-  }
-
   function CreateBook(event) {
-    fetch(Endpoint)
-      .then(response => {
-
-      })
-  }
-
-  function TestFetch(event){
-    console.log("test")
-    fetch(Endpoint)
-      .then(function(response) {
-        console.log('Response: ', response)
-        return response.json()
-      })
+    fetch(Endpoint, )
       .then(function(response){
-        console.log('Response: ', response)
-        return response.text();
+        console.log('Response: ', response.status)
+        if(response.status == 200){
+          return response.text();
+        }
+        return;
       })
       .then(function(text) { 
         console.log('text: ', text)
-        return text.text()
+        div.innerHTML = text;
+        return text;
       })
       .catch(function(message){
         console.log('Error: ', message)
-        return text.text()
-      })   
+      })  
   }
 
-  var ajaxBtn = document.getElementById('CreateBtn').addEventListener('click', TestFetch)
-  div.innerText = ajaxBtn;
+  function TestFetch(event){
+    fetch(Endpoint)
+      .then(function(response){
+        console.log('Response: ', response.status)
+        if(response.status == 200){
+          return response.text();
+        }
+        return;
+      })
+      .then(function(text) { 
+        console.log('text: ', text)
+        div.innerHTML = text;
+        return text;
+      })
+      .catch(function(message){
+        console.log('Error: ', message)
+      })  
+  }
+
+  var query = document.getElementById('CreateBtn').addEventListener('click', TestFetch)
+  if(query != null){
+    div.innerHTML += query;
+  }
+  
+  
+
 })
