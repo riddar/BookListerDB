@@ -4,19 +4,16 @@
 <head>
     <title>Labb2 webb</title>
     <meta charset="utf-8">
-    <script type="text/javascript" src="../Assets/Style.css"></script>
-    <script type="text/javascript" src="../Controllers/BookController.js"></script>
+    <script type="text/javascript" src="BookController.js"></script>
 </head>
 <body>
-    <form>
-        id: <input type="text" name="id">
-        title: <input type="text" name="title">
-        author: <input type="text" name="author">
-        <input type="submit" name="Create" value="Create" onlclick="TestFetch()">
-        <input type="submit" name="Get" value="Get">
-        <input type="submit" name="Change" value="Change">
-        <input type="submit" name="Remove" value="Remove">
-    </form>
+    id: <input type="text" name="id">
+    title: <input type="text" name="title">
+    author: <input type="text" name="author">
+    <button id="CreateBtn">Create</button>
+    <button id="CreateBtn">Get</button>
+    <button id="CreateBtn">Change</button>
+    <button id="CreateBtn">Delete</button>
     <div id="list">
     </div>
 </body>
