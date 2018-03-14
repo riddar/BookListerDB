@@ -7,14 +7,21 @@
     <script type="text/javascript" src="BookController.js"></script>
 </head>
 <body>
-    id: <input type="text" name="id">
-    title: <input type="text" name="title">
-    author: <input type="text" name="author">
+    id: <input type="text" name="id" id="id">
+    title: <input type="text" name="title" id="title">
+    author: <input type="text" name="author" id="author">
+    </br>
     <button id="CreateBtn">Create</button>
     <button id="ReadBtn">Get All</button>
     <button id="UpdateBtn">Change</button>
     <button id="DeleteBtn">Remove</button>
-    <div id="list">
-    </div>
+    </br>
+    <table>
+        <tr>
+            Books
+        </tr>
+        <tbody id="list">
+        </tbody>
+    </table>
 </body>
 </html>

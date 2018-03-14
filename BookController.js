@@ -1,12 +1,11 @@
 window.addEventListener('load', function(event){
-
-  var Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-  var key;
   var div = document.getElementById("list")
+  var Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
 
+  var key;
+  FetchKey();
 
-
-  function FetchKey(event){
+  function FetchKey(){
     fetch(Endpoint + "requestKey")
       .then(function(response){
         if(response.status == 200){
@@ -18,7 +17,6 @@ window.addEventListener('load', function(event){
         if(text.status != "error"){
           key = text.key;
           console.log('fetchkey: ', key)
-          return text.key;
         }
       })
       .catch(function(message){
@@ -26,41 +24,57 @@ window.addEventListener('load', function(event){
       })
   }
 
+  function CreateBook(event) {
+    var title = document.getElementById('title').value
+    var author = document.getElementById('author').value
+    console.log(Endpoint + "op=insert&"+key+"&title="+title+"&author="+author);
+    fetch(Endpoint + "op=insert&"+key+"&title="+title+"&author="+author)
+      .then(function(response){
+          if(response.status != 200){
+            return;
+          }
+          return response.json();
+      })
+      .then(function(text){
+        if(text.status === 'success'){
+          console.log('GetAllBooks: ', text)
+          div.innerHTML = text;
+          return text;
+        }
+      })
+      .catch(function(message){
+        console.log(message)
+      })
+  }
+
   function GetAllBooks(event) {
-    FetchKey();
-    console.log(Endpoint + "op=select&" + key);
+    console.log(Endpoint + "op=select&" + key)
     fetch(Endpoint + "op=select&" + key)
       .then(function(response){
         if(response.status != 200){
           return;
         }
 
-        response.json();
+        return response.json();
       })
       .then(function(text) { 
-        console.log('GetAllBooks: ', text)
-        div.innerHTML = key;
-        div.innerHTML += text.json();
-        return text;
+        //if(text.status != "error"){
+          console.log('GetAllBooks: ', text)
+          div.innerHTML += text.data;
+          return text;
+        //} 
       })
       .catch(function(message){
         console.log(message)
       })  
   }
 
-  function CreateBook(event) {
-    FetchKey();
-    fetch(Endpoint + "op=insert&"+key+"&"+title+"&"+author)
-  }
-
   function UpdateBook(event){
-    FetchKey();
-    fetch(Endpoint + "op=update&"+key+"&"+id+"&"+title+"&"+author)
+    fetch(Endpoint + "op=update&"+key+"&id="+id+"&title="+title+"&author="+author)
   }
 
   function DeleteBook(event){
-    FetchKey();
-    fetch(Endpoint + "op=delete&"+key+"&"+id)
+    fetch(Endpoint + "op=delete&"+key+"&id="+id)
   }
 
   
