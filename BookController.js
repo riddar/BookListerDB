@@ -1,41 +1,10 @@
 window.addEventListener('load', function(event){
 
-  let Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-
+  var Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+  var key;
   var div = document.getElementById("list")
 
-  function CreateBooks(event) {
 
-  }
-
-  function GetAllBooks(event) {
-    var key = ("key: ", FetchKey);
-    console.log(FetchKey)
-    fetch(Endpoint + "op=select&" + FetchKey)
-      .then(function(response){
-        console.log('Response: ', response.status)
-        if(response.status == 200){
-          return response.text();
-        }
-        return;
-      })
-      .then(function(text) { 
-        console.log('text: ', text)
-        div.innerHTML = text;
-        return text;
-      })
-      .catch(function(message){
-        console.log('Error: ', message)
-      })  
-  }
-
-  function UpdateBook(event){
-
-  }
-
-  function DeleteBook(event){
-
-  }
 
   function FetchKey(event){
     fetch(Endpoint + "requestKey")
@@ -47,24 +16,57 @@ window.addEventListener('load', function(event){
       })
       .then(function(text) { 
         if(text.status != "error"){
-          console.log('text: ', text.key)
-          div.innerHTML = text;
-          return text;
+          key = text.key;
+          console.log('fetchkey: ', key)
+          return text.key;
         }
-        else{
-          console.log()
-        }
-        
       })
       .catch(function(message){
         console.log('Error: ', message)
       })
   }
 
+  function GetAllBooks(event) {
+    FetchKey();
+    console.log(Endpoint + "op=select&" + key);
+    fetch(Endpoint + "op=select&" + key)
+      .then(function(response){
+        if(response.status != 200){
+          return;
+        }
+
+        response.json();
+      })
+      .then(function(text) { 
+        console.log('GetAllBooks: ', text)
+        div.innerHTML = key;
+        div.innerHTML += text.json();
+        return text;
+      })
+      .catch(function(message){
+        console.log(message)
+      })  
+  }
+
+  function CreateBook(event) {
+    FetchKey();
+    fetch(Endpoint + "op=insert&"+key+"&"+title+"&"+author)
+  }
+
+  function UpdateBook(event){
+    FetchKey();
+    fetch(Endpoint + "op=update&"+key+"&"+id+"&"+title+"&"+author)
+  }
+
+  function DeleteBook(event){
+    FetchKey();
+    fetch(Endpoint + "op=delete&"+key+"&"+id)
+  }
+
   
-  document.getElementById('CreateBtn').addEventListener('click', GetAllBooks)
-  document.getElementById('ReadBtn').addEventListener('click', FetchKey)
-  //document.getElementByClass('UpdateBtn').addEventListener('click', UpdateBook)
-  //document.getElementByClass('DeleteBtn').addEventListener('click', DeleteBook)
+  document.getElementById('CreateBtn').addEventListener('click', CreateBook)
+  document.getElementById('ReadBtn').addEventListener('click', GetAllBooks)
+  document.getElementById('UpdateBtn').addEventListener('click', UpdateBook)
+  document.getElementById('DeleteBtn').addEventListener('click', DeleteBook)
 
 })
