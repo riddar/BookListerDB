@@ -1,27 +1,28 @@
 ﻿<!DOCTYPE html>
+    <head>
+        <title>Labb2 webb</title>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="BookController.js"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>   
+        <a id="CreateBtn">Create</a>
+        <a id="ReadBtn">Get All</a>
+        <a id="UpdateBtn">Change</a>
+        <a id="DeleteBtn">Remove</a>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Labb2 webb</title>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="BookController.js"></script>
-</head>
-<body>
-    id: <input type="text" name="id" id="id">
-    title: <input type="text" name="title" id="title">
-    author: <input type="text" name="author" id="author">
-    </br>
-    <button id="CreateBtn">Create</button>
-    <button id="ReadBtn">Get All</button>
-    <button id="UpdateBtn">Change</button>
-    <button id="DeleteBtn">Remove</button>
-    </br>
-    <table>
-        <tr>
-            Books
-        </tr>
-        <tbody id="list">
-        </tbody>
-    </table>
-</body>
+        id: <input type="text" name="id" id="id">
+        title: <input type="text" name="title" id="title">
+        author: <input type="text" name="author" id="author">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+            <tbody id="list">
+            </tbody>
+        </table>
+        <div id=textbar></div>
+    </body>
 </html>
