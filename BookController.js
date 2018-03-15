@@ -36,8 +36,8 @@ window.addEventListener('load', function(event){
         i++;
           if(valid == false){
               valid = CreateData();
+              console.log(i);
           }
-          
       }
       while(i <= 10 || valid == true);
       GetAllBooks();
@@ -55,7 +55,6 @@ window.addEventListener('load', function(event){
     var author = document.getElementById('author').value
     fetch(Endpoint+"op=insert"+"&key="+key+"&title="+title+"&author="+author)
         .then(function(response){
-          console.log(response.status)
           if(response.status == 200){
             return response.json();
           }
@@ -190,14 +189,13 @@ window.addEventListener('load', function(event){
               }
               return response.json();
             })
-          .then(function(text){
-            if(text.status == "success"){
-              console.log("success")
-            }
-            else{
-              console.log("failed")
-            }
-          })
+          //.then(function(text){
+           // if(text.status == "success"){
+            //  console.log("success")
+          //  }
+           // else{
+          //  }
+          //})
         }
         while(i <= 10);
         GetAllBooks();
