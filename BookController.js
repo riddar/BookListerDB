@@ -37,10 +37,12 @@ window.addEventListener('load', function(event){
           if(valid == false){
               valid = CreateData();
               console.log(i);
+              valid = true;
           }
       }
-      while(i <= 10 || valid == true);
+      while(i <= 9 || valid == true);
       GetAllBooks();
+      document.getElementById('id').style.backgroundColor = "white";   
       document.getElementById('title').style.backgroundColor = "white";   
       document.getElementById('author').style.backgroundColor = "white";
     }
@@ -53,6 +55,7 @@ window.addEventListener('load', function(event){
   function CreateData(event){
     var title = document.getElementById('title').value
     var author = document.getElementById('author').value
+    var valid = false;
     fetch(Endpoint+"op=insert"+"&key="+key+"&title="+title+"&author="+author)
         .then(function(response){
           if(response.status == 200){
@@ -63,15 +66,17 @@ window.addEventListener('load', function(event){
         .then(function(text){
           if(text.status == 'success'){
             console.log('CreateBook: ', text)
-            return true;
+            valid = true;
           }
           else{
-            return false;
+            valid = false;
           }
         })
         .catch(function(message){
           console.log(message.error)
         })
+
+        return valid;
   }
 
   function GetAllBooks(event) {
@@ -111,13 +116,15 @@ window.addEventListener('load', function(event){
               data += '<td>' + text.data[i].author + '</td>';
               data += '</tr>';
             }
-          }
-          return div.innerHTML = data;
+          }   
         } 
       })
       .catch(function(message){
         console.log(message)
-      })  
+      })
+
+      div.innerHTML = data;
+      return data;
   }
 
   function UpdateBook(event){
@@ -151,6 +158,7 @@ window.addEventListener('load', function(event){
     var id = document.getElementById('id').value
     var title = document.getElementById('title').value
     var author = document.getElementById('author').value
+    var valid = false;
     fetch(Endpoint+"op=update"+"&key="+key+"&id="+id+"&title="+title+"&author="+author)
       .then(function(response){
         if(response.status != 200){
@@ -161,15 +169,17 @@ window.addEventListener('load', function(event){
       .then(function(text){
         if(text.status == "success"){
           console.log("success")
-          return true;
+          valid = true;
         }
         else{
-          return false;
+          valid = false;
         }
       })
       .catch(function(message){
         console.log(message)
       })
+
+      return valid;
   }
 
   function DeleteBook(event){
@@ -189,13 +199,6 @@ window.addEventListener('load', function(event){
               }
               return response.json();
             })
-          //.then(function(text){
-           // if(text.status == "success"){
-            //  console.log("success")
-          //  }
-           // else{
-          //  }
-          //})
         }
         while(i <= 10);
         GetAllBooks();

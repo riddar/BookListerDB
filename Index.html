@@ -6,23 +6,39 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>   
-        <a id="CreateBtn">Create</a>
-        <a id="ReadBtn">Get All</a>
-        <a id="UpdateBtn">Change</a>
-        <a id="DeleteBtn">Remove</a>
+        <div id="container">
+            <div id="row-menu">
+                <div id="row2">
+                id: <input type="text" name="id" id="id">
+                </div>
+                
+                <div id="row3">
+                title: <input type="text" name="title" id="title">
+                </div>
+                
+                <div id="row4">
+                author: <input type="text" name="author" id="author">
+                </div>
+            </div>
+            
+            <a id="CreateBtn">Create</a>
+            <a id="ReadBtn">Get All</a>
+            <a id="UpdateBtn">Change</a>
+            <a id="DeleteBtn">Remove</a>
 
-        id: <input type="text" name="id" id="id">
-        title: <input type="text" name="title" id="title">
-        author: <input type="text" name="author" id="author">
-        <table>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-            </tr>
-            <tbody id="list">
-            </tbody>
-        </table>
-        <div id=textbar></div>
+            <div id="table-row">
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                </tr>
+                <tbody id="list">
+                </tbody>
+            </table>
+            <div id=textbar></div>
+            </div>
+        </div>
     </body>
+
 </html>
