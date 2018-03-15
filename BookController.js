@@ -37,11 +37,10 @@ window.addEventListener('load', function(event){
           if(valid == false){
               valid = CreateData();
           }
-          GetAllBooks();
+          
       }
-
-
       while(i <= 10 || valid == true);
+      GetAllBooks();
       document.getElementById('title').style.backgroundColor = "white";   
       document.getElementById('author').style.backgroundColor = "white";
     }
@@ -89,7 +88,7 @@ window.addEventListener('load', function(event){
           valid = true;
         }
      }
-     while(i <= 10 || valid == true);
+     while(i <= 10);
   }
 
   function GetAllData(event){
@@ -127,16 +126,13 @@ window.addEventListener('load', function(event){
     var title = document.getElementById('title').value
     var author = document.getElementById('author').value
     var i = 0;
-    var valid = false;
     if(title.length > 0 && author.length > 0){
       if(id.length > 0){
         do{
           i++;
-          if(valid == false){
               valid = UpdateData();
-            }
           }
-          while(i <= 10 || valid == true);
+          while(i <= 10);
           document.getElementById('id').style.backgroundColor = "white";
           document.getElementById('title').style.backgroundColor = "white";   
           document.getElementById('author').style.backgroundColor = "white";
@@ -169,7 +165,6 @@ window.addEventListener('load', function(event){
           return true;
         }
         else{
-          console.log("failed")
           return false;
         }
       })
@@ -186,8 +181,7 @@ window.addEventListener('load', function(event){
 
     if(title.length == 0 && author.length == 0){
       if(id.length > 0){
-        do{
-          GetAllBooks();
+        do{    
           i++;
           fetch(Endpoint+"op=delete"+"&key="+key+"&id="+id)
           .then(function(response){
@@ -206,6 +200,7 @@ window.addEventListener('load', function(event){
           })
         }
         while(i <= 10);
+        GetAllBooks();
         document.getElementById('id').style.backgroundColor = "white";
         document.getElementById('title').style.backgroundColor = "white";   
         document.getElementById('author').style.backgroundColor = "white";
