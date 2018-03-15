@@ -26,35 +26,22 @@ window.addEventListener('load', function(event){
       })
   }
 
-  function CreateBook(event) {
+  function CreateBook(event) {   
+    var i = 0;
+    var valid = false;
     var title = document.getElementById('title').value
     var author = document.getElementById('author').value
-    var i = 0;
-
     if(title.length > 0 && author.length > 0){
       do{
         i++;
-        fetch(Endpoint+"op=insert"+"&key="+key+"&title="+title+"&author="+author)
-        .then(function(response){
-          console.log(response.status)
-          if(response.status != 200){
-            return;
+          if(valid == false){
+              valid = CreateData();
           }
-          return response.json();
-        })
-        .then(function(text){
-          if(text.status == 'success'){
-            console.log('CreateBook: ', text)
-            GetAllBooks();
-            return text;
-          }
-        })
-        .catch(function(message){
-          console.log(message.error)
-        })
           GetAllBooks();
       }
-      while(i <= 10 && text.status == 'success');
+
+
+      while(i <= 10 || valid == true);
       document.getElementById('title').style.backgroundColor = "white";   
       document.getElementById('author').style.backgroundColor = "white";
     }
@@ -64,9 +51,50 @@ window.addEventListener('load', function(event){
     } 
   }
 
+  function CreateData(event){
+    var title = document.getElementById('title').value
+    var author = document.getElementById('author').value
+    fetch(Endpoint+"op=insert"+"&key="+key+"&title="+title+"&author="+author)
+        .then(function(response){
+          console.log(response.status)
+          if(response.status == 200){
+            return response.json();
+          }
+          return;
+        })
+        .then(function(text){
+          if(text.status == 'success'){
+            console.log('CreateBook: ', text)
+            return true;
+          }
+          else{
+            return false;
+          }
+        })
+        .catch(function(message){
+          console.log(message.error)
+        })
+  }
+
   function GetAllBooks(event) {
-    var data = '';
-    fetch(Endpoint + "op=select"+"&key="+key)
+     var i = 0;
+     var valid = false;
+     var query = null;
+     do{
+      i++;
+      if(valid == false){
+        query = GetAllData();     
+      }
+      if(query != null){
+          valid = true;
+        }
+     }
+     while(i <= 10 || valid == true);
+  }
+
+  function GetAllData(event){
+     var data = '';
+     fetch(Endpoint + "op=select"+"&key="+key)
       .then(function(response){
         if(response.status != 200){
           return;
@@ -99,35 +127,20 @@ window.addEventListener('load', function(event){
     var title = document.getElementById('title').value
     var author = document.getElementById('author').value
     var i = 0;
-    if(title.length == 0 && author.length == 0){
+    var valid = false;
+    if(title.length > 0 && author.length > 0){
       if(id.length > 0){
         do{
           i++;
-          console.log(Endpoint+"op=update&"+key+"&id="+id+"&title="+title+"&author="+author);
-          fetch(Endpoint+"op=update&"+key+"&id="+id+"&title="+title+"&author="+author)
-            .then(function(response){
-              if(response.status != 200){
-                return;
-              }
-              return response.json();
-            })
-            .then(function(text){
-              if(text.status === "success"){
-                console.log("success")
-                return;
-              }
-              else{
-                console.log("failed")
-              }
-            })
-            .catch(function(message){
-              console.log(message)
-            })
+          if(valid == false){
+              valid = UpdateData();
+            }
           }
-          while(i <= 10);
+          while(i <= 10 || valid == true);
           document.getElementById('id').style.backgroundColor = "white";
           document.getElementById('title').style.backgroundColor = "white";   
           document.getElementById('author').style.backgroundColor = "white";
+          GetAllBooks();
       }
       else{
         document.getElementById('id').style.backgroundColor = "#f44242";
@@ -137,6 +150,32 @@ window.addEventListener('load', function(event){
       document.getElementById('title').style.backgroundColor = '#f44242';   
       document.getElementById('author').style.backgroundColor = "#f44242";
     }
+  }
+
+  function UpdateData(event){
+    var id = document.getElementById('id').value
+    var title = document.getElementById('title').value
+    var author = document.getElementById('author').value
+    fetch(Endpoint+"op=update"+"&key="+key+"&id="+id+"&title="+title+"&author="+author)
+      .then(function(response){
+        if(response.status != 200){
+          return;
+        }
+        return response.json();
+      })
+      .then(function(text){
+        if(text.status == "success"){
+          console.log("success")
+          return true;
+        }
+        else{
+          console.log("failed")
+          return false;
+        }
+      })
+      .catch(function(message){
+        console.log(message)
+      })
   }
 
   function DeleteBook(event){
