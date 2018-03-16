@@ -1,4 +1,5 @@
-a {
+a 
+{
 	-moz-box-shadow:inset 0px -3px 7px 0px #29bbff;
 	-webkit-box-shadow:inset 0px -3px 7px 0px #29bbff;
 	box-shadow:inset 0px -3px 7px 0px #29bbff;
@@ -25,7 +26,8 @@ a {
 	float:left;
 	
 }
-a:hover {
+a:hover 
+{
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0688fa), color-stop(1, #2dabf9));
 	background:-moz-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
 	background:-webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
@@ -36,26 +38,44 @@ a:hover {
 	background-color:#0688fa;
 	float:left;
 }
-a:active {
+a:active 
+{
 	position:relative;
 	top:1px;
 	float:left;
 }
 
-table{
+table
+{
 	position: absolute;
 	margin-top: 15px; 
+	margin: 30px;
 	float: left;
 }
 
-body{
+body
+{
 	background: #aacbff;
 }
 
-tbody{
+tbody
+{
 	background: #91bbff;
 	border: 1px solid black;
-  }
+}
+
+  
+ button
+ {
+	 width: 30%;
+	 background-color: lime;
+ }
+
+ #textbar
+ {
+	border: 1px solid black;
+	min-height: 24px;
+ }
   
  #row2, #row3, #row4
  {
@@ -68,7 +88,7 @@ tbody{
  {
 	 display: flex;
 	 border: solid black 1px;
-	 visibility:
+	 visibility: hidden;
  }
  
  #container

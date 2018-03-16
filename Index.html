@@ -17,28 +17,31 @@
                 </div>
                 
                 <div id="row4">
-                author: <input type="text" name="author" id="author">
+                    author: <input type="text" name="author" id="author">
                 </div>
-            </div>
-            
-            <a id="CreateBtn">Create</a>
+                    
+                    <button id="CreateBtn"> Create </button>
+                    <button id="UpdateBtn"> Update </button>
+                    <button id="DeleteBtn"> Remove </button>
+                </div>
+                    
             <a id="ReadBtn">Get All</a>
-            <a id="UpdateBtn">Change</a>
-            <a id="DeleteBtn">Remove</a>
-
-            <div id="table-row">
-            <table>
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                </tr>
-                <tbody id="list">
-                </tbody>
-            </table>
-            <div id=textbar></div>
-            </div>
+            <a id="b2" onclick="ChangeDivsCreateRow()">Create</a>
+            <a id="b3" onclick="ChangeDivsChangeRow()">Change</a>
+            <a id="b4" onclick="ChangeDivsRemoveRow()">Remove</a>
         </div>
+        
+        <div id="table-row">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+            <tbody id="list">
+            </tbody>
+        </table>
+        <div id=textbar></div>
+        </div>           
     </body>
-
 </html>

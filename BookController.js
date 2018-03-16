@@ -1,10 +1,11 @@
 window.addEventListener('load', function(event){
-  var div = document.getElementById("list")
-  var textbar = document.getElementById("textbar")
 
-  var Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+  let div = document.getElementById("list")
+  let textbar = document.getElementById("textbar")
+  let Endpoint = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+  var counter = 1;
 
-  var key;
+  let key;
   FetchKey();
 
   function FetchKey(event){
@@ -27,20 +28,18 @@ window.addEventListener('load', function(event){
   }
 
   function CreateBook(event) {   
-    var i = 0;
-    var valid = false;
-    var title = document.getElementById('title').value
-    var author = document.getElementById('author').value
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
+    let count = 0;
     if(title.length > 0 && author.length > 0){
-      do{
-        i++;
-          if(valid == false){
-              valid = CreateData();
-              console.log(i);
-              valid = true;
-          }
+      if(count == 0){
+          CreateData();
+          document.getElementById('textbar').innerHTML = "success on try: " + counter;
+          counter = 1;
       }
-      while(i <= 9 || valid == true);
+      else{
+        return count;
+      }
       GetAllBooks();
       document.getElementById('id').style.backgroundColor = "white";   
       document.getElementById('title').style.backgroundColor = "white";   
@@ -53,9 +52,10 @@ window.addEventListener('load', function(event){
   }
 
   function CreateData(event){
-    var title = document.getElementById('title').value
-    var author = document.getElementById('author').value
-    var valid = false;
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
+    let valid = false;
+    
     fetch(Endpoint+"op=insert"+"&key="+key+"&title="+title+"&author="+author)
         .then(function(response){
           if(response.status == 200){
@@ -68,21 +68,30 @@ window.addEventListener('load', function(event){
             console.log('CreateBook: ', text)
             valid = true;
           }
-          else{
-            valid = false;
+          else if(text.status == 'error'){ 
+            if(counter >= 10){
+              return;
+            }
+            else{
+              counter++;
+              CreateData();
+            }
           }
         })
         .catch(function(message){
           console.log(message.error)
         })
 
-        return valid;
+
+    if(valid == true){
+      return counter;
+    }
   }
 
   function GetAllBooks(event) {
-     var i = 0;
-     var valid = false;
-     var query = null;
+     let i = 0;
+     let valid = false;
+     let query = null;
      do{
       i++;
       if(valid == false){
@@ -92,11 +101,11 @@ window.addEventListener('load', function(event){
           valid = true;
         }
      }
-     while(i <= 10);
+     while(i <= 9);
   }
 
   function GetAllData(event){
-     var data = '';
+     let data = '';
      fetch(Endpoint + "op=select"+"&key="+key)
       .then(function(response){
         if(response.status != 200){
@@ -117,32 +126,30 @@ window.addEventListener('load', function(event){
               data += '</tr>';
             }
           }   
-        } 
+        }
+
+        div.innerHTML = data;
       })
       .catch(function(message){
         console.log(message)
       })
-
-      div.innerHTML = data;
+      
       return data;
   }
 
   function UpdateBook(event){
-    var id = document.getElementById('id').value
-    var title = document.getElementById('title').value
-    var author = document.getElementById('author').value
-    var i = 0;
+    let id = document.getElementById('id').value
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
     if(title.length > 0 && author.length > 0){
       if(id.length > 0){
-        do{
-          i++;
-              valid = UpdateData();
-          }
-          while(i <= 10);
+          UpdateData();
+          document.getElementById('textbar').innerHTML = "success on try: " + counter;
+          counter = 1;
+          GetAllBooks();
           document.getElementById('id').style.backgroundColor = "white";
           document.getElementById('title').style.backgroundColor = "white";   
           document.getElementById('author').style.backgroundColor = "white";
-          GetAllBooks();
       }
       else{
         document.getElementById('id').style.backgroundColor = "#f44242";
@@ -155,10 +162,10 @@ window.addEventListener('load', function(event){
   }
 
   function UpdateData(event){
-    var id = document.getElementById('id').value
-    var title = document.getElementById('title').value
-    var author = document.getElementById('author').value
-    var valid = false;
+    let id = document.getElementById('id').value
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
+    let valid = false;
     fetch(Endpoint+"op=update"+"&key="+key+"&id="+id+"&title="+title+"&author="+author)
       .then(function(response){
         if(response.status != 200){
@@ -167,40 +174,39 @@ window.addEventListener('load', function(event){
         return response.json();
       })
       .then(function(text){
-        if(text.status == "success"){
-          console.log("success")
+        if(text.status == 'success'){
+          console.log('UpdateBook: ', text)
           valid = true;
         }
-        else{
-          valid = false;
+        else if(text.status == 'error'){ 
+          if(counter >= 10){
+            return;
+          }
+          else{
+            counter++;
+            UpdateData();
+          }
         }
       })
       .catch(function(message){
-        console.log(message)
+        console.log(message.error)
       })
 
-      return valid;
+      if(valid == true){
+        return counter;
+      }
   }
 
   function DeleteBook(event){
-    var id = document.getElementById('id').value
-    var title = document.getElementById('title').value
-    var author = document.getElementById('author').value
-    var i = 0;
+    let id = document.getElementById('id').value
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
 
     if(title.length == 0 && author.length == 0){
       if(id.length > 0){
-        do{    
-          i++;
-          fetch(Endpoint+"op=delete"+"&key="+key+"&id="+id)
-          .then(function(response){
-              if(response.status != 200){
-                return;
-              }
-              return response.json();
-            })
-        }
-        while(i <= 10);
+        DeleteData();
+        document.getElementById('textbar').innerHTML = "success on try: " + counter;
+        counter = 1;
         GetAllBooks();
         document.getElementById('id').style.backgroundColor = "white";
         document.getElementById('title').style.backgroundColor = "white";   
@@ -215,9 +221,124 @@ window.addEventListener('load', function(event){
       document.getElementById('author').style.backgroundColor = "#f44242";
     }
   }
+
+  function DeleteData(event){
+    let id = document.getElementById('id').value
+    let title = document.getElementById('title').value
+    let author = document.getElementById('author').value
+    valid = false;
+    fetch(Endpoint+"op=delete"+"&key="+key+"&id="+id)
+      .then(function(response){
+          if(response.status != 200){
+            return;
+          }
+          return response.json();
+      })
+      .then(function(text){
+        if(text.status == 'success'){
+          console.log('DeleteBook: ', text)
+          valid = true;
+        }
+        else if(text.status == 'error'){ 
+          if(counter >= 10){
+            return;
+          }
+          else{
+            counter++;
+            DeleteData();
+          }
+        }
+      })
+      .catch(function(message){
+        console.log(message.error)
+      })
+
+      if(valid == true){
+        return counter;
+      }
+    
+  }
   
   document.getElementById('CreateBtn').addEventListener('click', CreateBook)
   document.getElementById('ReadBtn').addEventListener('click', GetAllBooks)
   document.getElementById('UpdateBtn').addEventListener('click', UpdateBook)
   document.getElementById('DeleteBtn').addEventListener('click', DeleteBook)
 })
+
+function ChangeDivsCreateRow()
+{   
+    document.getElementById('id').value = ''
+    document.getElementById('author').value = ''
+    document.getElementById('title').value = ''
+    
+    document.getElementById('id').style.backgroundColor = "white";
+    document.getElementById('title').style.backgroundColor = "white";   
+    document.getElementById('author').style.backgroundColor = "white";
+    
+    document.getElementById("row-menu").style.visibility = "hidden";
+    document.getElementById("row2").style.visibility = "hidden";
+    document.getElementById("row3").style.visibility = "visible";
+    document.getElementById("row4").style.visibility = "visible";
+    
+    document.getElementById("CreateBtn").style.visibility = "visible";
+    document.getElementById("UpdateBtn").style.visibility = "hidden";
+    document.getElementById("DeleteBtn").style.visibility = "hidden";
+        
+    document.getElementById("ReadBtn").style.order = "1";
+    document.getElementById("b2").style.order = "2";
+    document.getElementById("row-menu").style.order = "3";
+    document.getElementById("b3").style.order = "4";
+    document.getElementById("b4").style.order = "5";
+}
+function ChangeDivsChangeRow()
+{
+    document.getElementById('id').value = ''
+    document.getElementById('author').value = ''
+    document.getElementById('title').value = ''
+    
+    document.getElementById('id').style.backgroundColor = "white";
+    document.getElementById('title').style.backgroundColor = "white";   
+    document.getElementById('author').style.backgroundColor = "white";
+    
+    document.getElementById("row-menu").style.visibility = "visible";
+    document.getElementById("row2").style.visibility = "visible";
+    document.getElementById("row3").style.visibility = "visible";
+    document.getElementById("row4").style.visibility = "visible";
+    
+    document.getElementById("CreateBtn").style.visibility = "hidden";
+    document.getElementById("UpdateBtn").style.visibility = "visible";
+    document.getElementById("DeleteBtn").style.visibility = "hidden";
+    
+    
+    document.getElementById("ReadBtn").style.order = "1";
+    document.getElementById("b2").style.order = "2";
+    document.getElementById("b3").style.order = "3";
+    document.getElementById("row-menu").style.order = "4";
+    document.getElementById("b4").style.order = "5";
+}
+function ChangeDivsRemoveRow()
+{   
+    document.getElementById('id').value = ''
+    document.getElementById('author').value = ''
+    document.getElementById('title').value = ''
+    
+    document.getElementById('id').style.backgroundColor = "white";
+    document.getElementById('title').style.backgroundColor = "white";   
+    document.getElementById('author').style.backgroundColor = "white";
+    
+    document.getElementById("row-menu").style.visibility = "visible";
+    document.getElementById("row2").style.visibility = "visible";
+    document.getElementById("row3").style.visibility = "hidden";
+    document.getElementById("row4").style.visibility = "hidden";
+    
+    document.getElementById("CreateBtn").style.visibility = "hidden";
+    document.getElementById("UpdateBtn").style.visibility = "hidden";
+    document.getElementById("DeleteBtn").style.visibility = "visible";
+    
+    
+    document.getElementById("ReadBtn").style.order = "1";   
+    document.getElementById("b2").style.order = "2";
+    document.getElementById("b3").style.order = "3";
+    document.getElementById("b4").style.order = "4";
+    document.getElementById("row-menu").style.order = "5";
+}
